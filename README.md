@@ -23,7 +23,7 @@ Follow the instructions to obtain a `refresh_token` file containing an AAD refre
 ## Step 3: configure OfflineIMAP
 Edit your `.offlineimaprc` file so that your remote repository section looks like this:
 
-```toml 
+```ini
 [Repository Remote]
 type = IMAP
 sslcacertfile = <path to CA certificates>
