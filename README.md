@@ -35,3 +35,5 @@ oauth2_client_id = <the client ID from step 1>
 oauth2_client_secret = <the client secret from step 1>
 oauth2_refresh_token = <the contents of the refresh_token file from step 2>
 ```
+
+Note: in practice you should store your token in some type of secure key store.
