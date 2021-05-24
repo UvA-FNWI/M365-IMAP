@@ -37,3 +37,9 @@ oauth2_refresh_token = <the contents of the refresh_token file from step 2>
 ```
 
 Note: in practice you should store your token in some type of secure key store.
+
+Optionally you may want to include
+```ini
+folderfilter = lambda folder: not folder.startswith('Calendar') and not folder.startswith('Contacts')
+```
+to filter out folders containing non-mail items.
