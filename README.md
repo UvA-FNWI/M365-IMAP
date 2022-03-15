@@ -44,18 +44,20 @@ folderfilter = lambda folder: not folder.startswith('Calendar') and not folder.s
 ```
 to filter out folders containing non-mail items.
 
-# Sending SMTP
+# Sending Mail
 
-SMTP in a sendmail program like msmtp needs to use the access token,
-which has to be refreshed periodically using the refresh_token.
+Sending mail with a program like msmtp using SMTP requires an access token. The
+access token has a short life and has to be refreshed periodically using the
+refresh token.
 
-refresh_token.py takes the refresh_token in config.RefreshTokenFileName
-and uses the MSAL library to request a new access token (and refresh
-token).
+`refresh_token.py` takes the refresh token stored in the file named in
+config.RefreshTokenFileName and uses the MSAL library to request a new access
+token. The new access token comes with a new refresh token and this is stored
+in config.RefreshTokenFileName as well.
 
-refresh_token also prints the access_token, so it can easily be used
-password scripts that work with your sendmail program. For example, the
-sendmail configuration in msmtprc would read:
+Optionally, `refresh_token.py` also prints the access token, so it can easily
+be used in password scripts that work with your sendmail program. For example,
+the sendmail configuration in msmtprc would read:
 
 ```
 account myaccount
