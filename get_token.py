@@ -29,6 +29,10 @@ if 'error' in token:
     print(token)
     sys.exit("Failed to get access token")
 
-print(f'Access token acquired, writing to file {config.OutputFileName}')
-with open(config.OutputFileName, 'w') as f:
-    f.write(cache.find('RefreshToken')[0]['secret'])
+with open(config.RefreshTokenFileName, 'w') as f:
+    print(f'Refresh token acquired, writing to file {config.RefreshTokenFileName}')
+    f.write(token['refresh_token'])
+
+with open(config.AccessTokenFileName, 'w') as f:
+    print(f'Access token acquired, writing to file {config.AccessTokenFileName}')
+    f.write(token['access_token'])

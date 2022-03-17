@@ -43,3 +43,31 @@ Optionally you may want to include
 folderfilter = lambda folder: not folder.startswith('Calendar') and not folder.startswith('Contacts')
 ```
 to filter out folders containing non-mail items.
+
+# Sending Mail
+
+Sending mail with a program like msmtp using SMTP requires an access token. The
+access token has a short life and has to be refreshed periodically using the
+refresh token.
+
+`refresh_token.py` takes the refresh token stored in the file named in
+config.RefreshTokenFileName and uses the MSAL library to request a new access
+token. The new access token comes with a new refresh token and this is stored
+in config.RefreshTokenFileName as well.
+
+Optionally, `refresh_token.py` also prints the access token, so it can easily
+be used in password scripts that work with your sendmail program. For example,
+the sendmail configuration in msmtprc would read:
+
+```
+account myaccount
+host    smtp.office365.com
+port    587
+auth    xoauth2
+tls     on
+tls_starttls on
+from    <user@domain>
+user    <user@domain>
+passwordeval "cd /usr/local/src/M365-IMAP/; python3 refresh_token.py"
+```
+
