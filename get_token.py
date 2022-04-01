@@ -1,6 +1,7 @@
 from msal import ConfidentialClientApplication, SerializableTokenCache
 import config
 import http.server
+import os
 import sys
 import threading
 import urllib.parse
@@ -15,11 +16,13 @@ app = ConfidentialClientApplication(config.ClientId, client_credential=config.Cl
 
 url = app.get_authorization_request_url(config.Scopes, redirect_uri=redirect_uri)
 
+# webbrowser.open may fail silently
+print("Navigate to the following url in a web browser, if doesn't open automatically:")
+print(url)
 try:
     webbrowser.open(url)
 except Exception:
-    print('Navigate to the following url in a web browser:')
-    print(url)
+    pass
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -45,7 +48,11 @@ code = ''
 
 server_address = ('', 8745)
 httpd = http.server.HTTPServer(server_address, Handler)
-httpd.serve_forever()
+
+# If we are running over ssh then the browser on the local machine
+# would never be able access localhost:8745
+if not os.getenv('SSH_CONNECTION'):
+    httpd.serve_forever()
 
 if code == '':
     print('After login, you will be redirected to a blank (or error) page with a url containing an access code. Paste the url below.')
