@@ -2,7 +2,6 @@ from msal import ConfidentialClientApplication, SerializableTokenCache
 import config
 import sys
 
-redirect_uri = "http://localhost"
 print_access_token = True
 
 # We use the cache to extract the refresh token

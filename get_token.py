@@ -1,8 +1,13 @@
 from msal import ConfidentialClientApplication, SerializableTokenCache
 import config
+import http.server
 import sys
+import threading
+import urllib.parse
+import webbrowser
 
-redirect_uri = "http://localhost"
+
+redirect_uri = "http://localhost:8745/"
 
 # We use the cache to extract the refresh token
 cache = SerializableTokenCache()
@@ -10,16 +15,44 @@ app = ConfidentialClientApplication(config.ClientId, client_credential=config.Cl
 
 url = app.get_authorization_request_url(config.Scopes, redirect_uri=redirect_uri)
 
-print('Navigate to the following url in a web browser:')
-print(url)
+try:
+    webbrowser.open(url)
+except Exception:
+    print('Navigate to the following url in a web browser:')
+    print(url)
 
-print()
 
-print('After login, you will be redirected to a blank (or error) page with a url containing an access code. Paste the url below.')
-resp = input('Response url: ')
+class Handler(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        parsed_url = urllib.parse.urlparse(self.path)
+        parsed_query = urllib.parse.parse_qs(parsed_url.query)
+        global code
+        code = next(iter(parsed_query['code']), '')
 
-i = resp.find('code') + 5
-code = resp[i : resp.find('&', i)] if i > 4 else resp
+        response_body = b'Success. Look back at your terminal.\r\n'
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/plain')
+        self.send_header('Content-Length', len(response_body))
+        self.end_headers()
+        self.wfile.write(response_body)
+
+        global httpd
+        t = threading.Thread(target=lambda: httpd.shutdown())
+        t.start()
+
+
+code = ''
+
+server_address = ('', 8745)
+httpd = http.server.HTTPServer(server_address, Handler)
+httpd.serve_forever()
+
+if code == '':
+    print('After login, you will be redirected to a blank (or error) page with a url containing an access code. Paste the url below.')
+    resp = input('Response url: ')
+
+    i = resp.find('code') + 5
+    code = resp[i : resp.find('&', i)] if i > 4 else resp
 
 token = app.acquire_token_by_authorization_code(code, config.Scopes, redirect_uri=redirect_uri)
 
