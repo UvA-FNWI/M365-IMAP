@@ -6,7 +6,7 @@ print_access_token = True
 
 # We use the cache to extract the refresh token
 cache = SerializableTokenCache()
-app = ConfidentialClientApplication(config.ClientId, client_credential=config.ClientSecret, token_cache=cache)
+app = ConfidentialClientApplication(config.ClientId, client_credential=config.ClientSecret, token_cache=cache, authority=config.Authority)
 
 
 old_refresh_token = open(config.RefreshTokenFileName,'r').read()
