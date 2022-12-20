@@ -1,6 +1,6 @@
 # Using OfflineIMAP with M365
 
-This instruction describes how [OfflineIMAP](https://www.offlineimap.org/) can be used with an IMAP-enabled Exchange Online (M365) environment using OAuth2, see the [OfflineIMAP config documentation](https://github.com/OfflineIMAP/offlineimap/blob/master/offlineimap.conf#L897). Note that the tenant must be configured to support IMAP over 'modern authentication' and that it requires app consent to be granted for a mail app for which you have the client ID and secret. 
+This instruction describes how [OfflineIMAP](https://www.offlineimap.org/) can be used with an IMAP-enabled Exchange Online (M365) environment using OAuth2, see the [OfflineIMAP config documentation](https://github.com/OfflineIMAP/offlineimap/blob/master/offlineimap.conf#L897). Note that the Microsoft 365 instance (the [tenant](https://learn.microsoft.com/en-us/microsoft-365/solutions/tenant-management-overview?view=o365-worldwide)) must be configured to support IMAP over 'modern authentication' and that it requires app consent to be granted for a mail app for which you have the client ID and secret. 
 
 A variation of the below should work with any OAuth-enabled mail client or script. 
 
