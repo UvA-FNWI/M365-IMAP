@@ -5,7 +5,7 @@ This instruction describes how [OfflineIMAP](https://www.offlineimap.org/) can b
 A variation of the below should work with any OAuth-enabled mail client or script. 
 
 ## Step 1: get a client ID/secret
-In order to connect to Azure AD for authentication, you need a client ID and secret (an "app registration" in AAD). Confusingly, the client secret doesn't actually need to be a secret (a client app like a mail client can't keep secrets, after all). You can your own app registration, or use an existing one such as Thunderbird's, which is [publicly available](https://hg.mozilla.org/comm-central/file/tip/mailnews/base/src/OAuth2Providers.jsm) (see the `login.microsoft.com` section). Whatever client ID you use, it will need to have been granted the `IMAP.AccessAsUser.All` permission in your M365 tenant.  
+In order to connect to Azure AD for authentication, you need a client ID and secret (an "app registration" in AAD). Confusingly, the client secret doesn't actually need to be a secret (a client app like a mail client can't keep secrets, after all). You can your own app registration, or use an existing one such as Thunderbird's, which is [publicly available](https://hg-edge.mozilla.org/comm-central/file/tip/mailnews/base/src/OAuth2Providers.sys.mjs) (see the `login.microsoft.com` section). Whatever client ID you use, it will need to have been granted the `IMAP.AccessAsUser.All` permission in your M365 tenant.  
 
 ## Step 2: get a token
 Since OfflineIMAP doesn't support an interactive flow for getting a token, you need to do this step yourself. You can use `get_token.py` for this purpose, which uses Microsoft's [MSAL](https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-overview) wrapper library to perform the OAuth2 flow:
