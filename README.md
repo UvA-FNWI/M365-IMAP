@@ -4,6 +4,7 @@ This repository provides instructions and small helper scripts to obtain and ref
 You can then use these with:
 - **[offlineimap3](https://github.com/OfflineIMAP/offlineimap3)** to read/sync your mailbox via IMAP
 - **[msmtp](https://wiki.debian.org/msmtp)** (or similar) to send mail via SMTP
+- **[mutt](http://www.mutt.org/)** to do both
 - a small Python demo script (`demo.py`) that shows both.
 
 The basic idea:
@@ -149,6 +150,19 @@ echo "Test" | msmtp -a m365 someone@example.com
 ```
 
 Any other SMTP client that can run an external command to obtain the password can use the same pattern: call `refresh_token.py` and treat the printed access token as the XOAUTH2 password.
+
+---
+## Using mutt
+Install mutt and config `~/.muttrc`:
+```bash
+set imap_user = <your M365 email>
+set folder = imaps://${imap_user}@outlook.office365.com:993/
+set imap_authenticators = "xoauth2"
+set imap_oauth_refresh_command = "python3 /path/to/refresh_token.py"
+set smtp_url = smtp://${imap_user}@smtp.office365.com:587
+set smtp_authenticators = "xoauth2"
+set smtp_oauth_refresh_command = ${imap_oauth_refresh_command}
+```
 
 ---
 ## Python demo client (`demo.py`)
